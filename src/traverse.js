@@ -59,12 +59,13 @@ export function convertToUDTStructure(data) {
         ? { baseType: formatted }
         : {
             baseType: "List",
-
             typeArgument: formatted
           };
     }
   }
 }
+
+let delay = (ms) => new Promise((r) => setTimeout(r, ms));
 
 export const getLinks = (udts) => {
   let linksOnly = Object.values(udts).reduce((acc, udt, i) => {
@@ -73,7 +74,6 @@ export const getLinks = (udts) => {
         .filter((p) => udts[p.type.baseType] || udts[p.type.typeArgument])
         .reduce((ac, p) => {
           let link = p.type.typeArgument || p.type.baseType;
-
           setTimeout(() => (ac[link] = acc[link]), 0);
           return ac;
         }, {});
@@ -82,8 +82,8 @@ export const getLinks = (udts) => {
     acc[udt.fqn] = getLinks(udt.nodes);
     return acc;
   }, {});
-  // TODO ! won't work
-  return linksOnly;
+
+  return delay(0).then(() => linksOnly);
 };
 
 export function findTypesToUpdate(type, typesTree) {

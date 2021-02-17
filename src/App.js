@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import { render } from "react-dom";
 import "./styles.css";
 import {
   convertToUDTStructure,
@@ -5,12 +7,40 @@ import {
   getLinks
 } from "./traverse";
 
+const udts = convertToUDTStructure(generateUdtsWithoutRecTypes(10));
+
 export default function App() {
-  const udts = convertToUDTStructure(generateUdtsWithoutRecTypes(20));
+  const [linked, setLinked] = useState({});
 
-  const linkedTypes = getLinks(udts);
+  useEffect(() => {
+    async function setLinksAsync() {
+      const links = await getLinks(udts);
+      setLinked(links);
+    }
 
-  console.log(linkedTypes);
+    setLinksAsync();
+  }, []);
 
-  return <div className="App">{JSON.stringify(linkedTypes)}</div>;
+  return (
+    <div className="App">
+      <pre>{renderNested(linked)}</pre>
+    </div>
+  );
+}
+
+function renderNested(obj) {
+  return (
+    <div>
+      {Object.entries(obj).map(([key, value]) => {
+        return (
+          <>
+            <p>{key}</p>
+            <div style={{ marginLeft: "20px" }}>
+              {Object.keys(value).length > 0 && renderNested(value)}
+            </div>
+          </>
+        );
+      })}
+    </div>
+  );
 }
