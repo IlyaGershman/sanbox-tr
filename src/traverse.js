@@ -86,6 +86,21 @@ export const getLinks = (udts) => {
   return delay(0).then(() => linksOnly);
 };
 
+export const getLinksFlat = (udts) => {
+  let linksOnly = Object.values(udts).reduce((acc, udt, i) => {
+    function getLinks(nodes = []) {
+      return nodes
+        .filter((p) => udts[p.type.baseType] || udts[p.type.typeArgument])
+        .map((p) => p.type.typeArgument || p.type.baseType);
+    }
+
+    acc[udt.fqn] = getLinks(udt.nodes);
+    return acc;
+  }, {});
+
+  return linksOnly;
+};
+
 export function findTypesToUpdate(type, typesTree) {
   console.log(typesTree[type]);
   let updated = {};

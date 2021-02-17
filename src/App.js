@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { render } from "react-dom";
+
 import "./styles.css";
 import {
   convertToUDTStructure,
   generateUdtsWithoutRecTypes,
-  getLinks
+  getLinks,
+  getLinksFlat
 } from "./traverse";
 
 const udts = convertToUDTStructure(generateUdtsWithoutRecTypes(10));
@@ -21,8 +22,12 @@ export default function App() {
     setLinksAsync();
   }, []);
 
+  const flatLinks = getLinksFlat(udts);
+  console.log(flatLinks);
+
   return (
     <div className="App">
+      <pre>{renderFlat(flatLinks)}</pre>
       <pre>{renderNested(linked)}</pre>
     </div>
   );
@@ -43,4 +48,19 @@ function renderNested(obj) {
       })}
     </div>
   );
+}
+
+function renderFlat(obj) {
+  function renderOne([key, links]) {
+    return (
+      <>
+        <p>{key}</p>
+        <div style={{ marginLeft: "20px" }}>
+          {links.length > 0 && links.map((l) => renderOne([l, obj[l]]))}
+        </div>
+      </>
+    );
+  }
+
+  return <div>{Object.entries(obj).map(renderOne)}</div>;
 }
