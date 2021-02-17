@@ -3,9 +3,12 @@ import { useEffect, useState } from "react";
 import "./styles.css";
 import {
   convertToUDTStructure,
+  findTypesToUpdate,
+  findTypesToUpdateFlat,
   generateUdtsWithoutRecTypes,
   getLinks,
-  getLinksFlat
+  getLinksFlat,
+  getUniquePaths
 } from "./traverse";
 
 const udts = convertToUDTStructure(generateUdtsWithoutRecTypes(10));
@@ -16,6 +19,7 @@ export default function App() {
   useEffect(() => {
     async function setLinksAsync() {
       const links = await getLinks(udts);
+
       setLinked(links);
     }
 
@@ -23,7 +27,17 @@ export default function App() {
   }, []);
 
   const flatLinks = getLinksFlat(udts);
-  console.log(flatLinks);
+  const typeUpdated = findTypesToUpdate("UserDefinedType_udt-2", linked);
+  const typeUpdatedFlat = findTypesToUpdateFlat(
+    "UserDefinedType_udt-2",
+    flatLinks
+  );
+
+  const paths = getUniquePaths(linked);
+  console.log("paths", paths);
+
+  // console.log("typeUpdated", typeUpdated);
+  // console.log("typeUpdatedFlat", typeUpdatedFlat);
 
   return (
     <div className="App">
