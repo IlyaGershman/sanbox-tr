@@ -59,6 +59,7 @@ export function convertToUDTStructure(data) {
         ? { baseType: formatted }
         : {
             baseType: "List",
+
             typeArgument: formatted
           };
     }
