@@ -1,3 +1,5 @@
+import _ from "lodash";
+
 let delay = (ms) => new Promise((r) => setTimeout(r, ms));
 
 export const getLinks = (udts) => {
@@ -7,6 +9,7 @@ export const getLinks = (udts) => {
         .filter((p) => udts[p.type.baseType] || udts[p.type.typeArgument])
         .reduce((ac, p) => {
           let link = p.type.typeArgument || p.type.baseType;
+          // deep nest objects
           setTimeout(() => (ac[link] = acc[link]), 0);
           return ac;
         }, {});
@@ -16,7 +19,10 @@ export const getLinks = (udts) => {
     return acc;
   }, {});
 
-  return delay(0).then(() => linksOnly);
+  return delay(0).then(() => {
+    console.log(linksOnly);
+    return linksOnly;
+  });
 };
 
 export const getLinksFlat = (udts) => {
@@ -94,69 +100,24 @@ export function getUniquePaths(typesTree) {
   return paths;
 }
 
-export const generateUdtsWithRecTypes = (n) =>
-  new Array(n).fill(null).reduce((acc, c, i) => {
-    let getKey = (i) => `udt-${i}`;
-    acc[getKey(i)] = {
-      key: getKey(i),
-      links: [
-        { link: getKey(i - 1) },
-        { link: getKey(i - 2) },
-        { link: getKey(i - 3) },
-        { link: getKey(i) },
-        { link: getKey(i + 1) },
-        { link: getKey(i + 2) },
-        { link: getKey(i + 3) }
-      ]
-    };
-    return acc;
-  }, {});
+export function getUniquePathsFlat(typesTreeFlat) {
+  if (Object.keys(typesTreeFlat).length < 1) return null;
 
-export const generateUdtsWithoutRecTypes = (n) =>
-  new Array(n).fill(null).reduce((acc, c, i) => {
-    let getKey = (i) => `udt-${i}`;
+  let paths = {};
+  let queue = Object.keys(typesTreeFlat).map((key) => ({ key, path: [] }));
 
-    acc[getKey(i)] = {
-      key: getKey(i),
-      links: [
-        { link: getKey(i + 1) },
-        { link: getKey(i + 2) },
-        { link: getKey(i + 3) },
-        { link: getKey(i + 4) },
-        { link: getKey(i + 5) },
-        { link: getKey(i + 6) },
-        { link: getKey(i + 7) }
-      ]
-    };
-    return acc;
-  }, {});
-
-// HELPERS
-// makes UDT structure: [{fqn, type: {baseType} || {baseType: LIST, typeArgument}}]
-export function convertToUDTStructure(data) {
-  return Object.values(data).reduce((acc, { key, links }) => {
-    acc[`${"UserDefinedType_"}${key}`] = {
-      fqn: `${"UserDefinedType_"}${key}`,
-      name: `${"UserDefinedType_"}${key}`,
-      displayName: `${"UserDefinedType_"}${key}`,
-      nodes: getNodes(links)
-    };
-    return acc;
-  }, {});
-
-  function getNodes(links) {
-    return links.map(({ link }, index) => ({
-      type: getType({ link, index })
-    }));
-
-    function getType({ link, index }) {
-      const formatted = `${"UserDefinedType_"}${link}`;
-      return index % 2 === 0
-        ? { baseType: formatted }
-        : {
-            baseType: "List",
-            typeArgument: formatted
-          };
+  while (queue.length > 0) {
+    let { path, key } = queue.shift();
+    const nextObjKeys = typesTreeFlat[key];
+    const newPath = [...path, key];
+    if (nextObjKeys.length) {
+      nextObjKeys.forEach((key) => {
+        queue.push({ path: newPath, key });
+      });
+    } else {
+      paths[newPath] = newPath;
     }
   }
+
+  return Object.values(paths);
 }

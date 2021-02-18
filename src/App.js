@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
+import { convertToUDTStructure, generateUdtsWithoutRecTypes } from "./gens";
 
 import "./styles.css";
 import {
-  convertToUDTStructure,
   findTypesToUpdate,
   findTypesToUpdateFlat,
-  generateUdtsWithoutRecTypes,
   getLinks,
   getLinksFlat,
-  getUniquePaths
+  getUniquePaths,
+  getUniquePathsFlat
 } from "./traverse";
 
 const udts = convertToUDTStructure(generateUdtsWithoutRecTypes(10));
@@ -26,6 +26,12 @@ export default function App() {
     setLinksAsync();
   }, []);
 
+  if (Object.keys(linked).length < 1) {
+    console.log("sssss");
+
+    return <div></div>;
+  }
+
   const flatLinks = getLinksFlat(udts);
   const typeUpdated = findTypesToUpdate("UserDefinedType_udt-2", linked);
   const typeUpdatedFlat = findTypesToUpdateFlat(
@@ -35,6 +41,8 @@ export default function App() {
 
   const paths = getUniquePaths(linked);
   console.log("paths", paths);
+  const pathsFlat = getUniquePathsFlat(flatLinks);
+  console.log("pathsFlat", pathsFlat);
 
   // console.log("typeUpdated", typeUpdated);
   // console.log("typeUpdatedFlat", typeUpdatedFlat);
