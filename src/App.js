@@ -27,25 +27,22 @@ export default function App() {
   }, []);
 
   if (Object.keys(linked).length < 1) {
-    console.log("sssss");
-
+    console.log("loading nested nestedness...");
     return <div></div>;
   }
 
+  console.log("linked", linked);
   const flatLinks = getLinksFlat(udts);
-  const typeUpdated = findTypesToUpdate("UserDefinedType_udt-2", linked);
-  const typeUpdatedFlat = findTypesToUpdateFlat(
-    "UserDefinedType_udt-2",
-    flatLinks
-  );
+  console.log("flatLinks", flatLinks);
+  const typeUpdated = findTypesToUpdate("kookoobooboo_2", linked);
+  console.log("typeUpdated", typeUpdated);
+  const typeUpdatedFlat = findTypesToUpdateFlat("kookoobooboo_2", flatLinks);
+  console.log("typeUpdatedFlat", typeUpdatedFlat);
 
   const paths = getUniquePaths(linked);
   console.log("paths", paths);
   const pathsFlat = getUniquePathsFlat(flatLinks);
   console.log("pathsFlat", pathsFlat);
-
-  // console.log("typeUpdated", typeUpdated);
-  // console.log("typeUpdatedFlat", typeUpdatedFlat);
 
   return (
     <div className="App">

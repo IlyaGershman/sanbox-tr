@@ -1,6 +1,6 @@
 export const generateUdtsWithRecTypes = (n) =>
   new Array(n).fill(null).reduce((acc, c, i) => {
-    let getKey = (i) => `udt-${i}`;
+    let getKey = (i) => `${i}`;
     acc[getKey(i)] = {
       key: getKey(i),
       links: [
@@ -18,7 +18,7 @@ export const generateUdtsWithRecTypes = (n) =>
 
 export const generateUdtsWithoutRecTypes = (n) =>
   new Array(n).fill(null).reduce((acc, c, i) => {
-    let getKey = (i) => `udt-${i}`;
+    let getKey = (i) => `${i}`;
 
     acc[getKey(i)] = {
       key: getKey(i),
@@ -39,10 +39,10 @@ export const generateUdtsWithoutRecTypes = (n) =>
 // makes UDT structure: [{fqn, type: {baseType} || {baseType: LIST, typeArgument}}]
 export function convertToUDTStructure(data) {
   return Object.values(data).reduce((acc, { key, links }) => {
-    acc[`${"UserDefinedType_"}${key}`] = {
-      fqn: `${"UserDefinedType_"}${key}`,
-      name: `${"UserDefinedType_"}${key}`,
-      displayName: `${"UserDefinedType_"}${key}`,
+    acc[`${"kookoobooboo_"}${key}`] = {
+      fqn: `${"kookoobooboo_"}${key}`,
+      name: `${"kookoobooboo_"}${key}`,
+      displayName: `${"kookoobooboo_"}${key}`,
       nodes: getNodes(links)
     };
     return acc;
@@ -54,7 +54,7 @@ export function convertToUDTStructure(data) {
     }));
 
     function getType({ link, index }) {
-      const formatted = `${"UserDefinedType_"}${link}`;
+      const formatted = `${"kookoobooboo_"}${link}`;
       return index % 2 === 0
         ? { baseType: formatted }
         : {
