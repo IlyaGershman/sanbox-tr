@@ -11,7 +11,7 @@ import {
   getUniquePathsFlat
 } from "./traverse";
 
-const udts = convertToUDTStructure(generateNotRecursiveLinks(10));
+const udts = convertToUDTStructure(generateNotRecursiveLinks(5));
 
 export default function App() {
   const [linked, setLinked] = useState({});
