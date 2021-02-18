@@ -1,5 +1,3 @@
-import _ from "lodash";
-
 let delay = (ms) => new Promise((r) => setTimeout(r, ms));
 
 export const getLinks = (udts) => {
@@ -19,10 +17,7 @@ export const getLinks = (udts) => {
     return acc;
   }, {});
 
-  return delay(0).then(() => {
-    console.log(linksOnly);
-    return linksOnly;
-  });
+  return delay(0).then(() => linksOnly);
 };
 
 export const getLinksFlat = (udts) => {

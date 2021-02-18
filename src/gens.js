@@ -1,4 +1,4 @@
-export const generateUdtsWithRecTypes = (n) =>
+export const generateRecursiveLinks = (n) =>
   new Array(n).fill(null).reduce((acc, c, i) => {
     let getKey = (i) => `${i}`;
     acc[getKey(i)] = {
@@ -16,27 +16,25 @@ export const generateUdtsWithRecTypes = (n) =>
     return acc;
   }, {});
 
-export const generateUdtsWithoutRecTypes = (n) =>
+export const generateNotRecursiveLinks = (n) =>
   new Array(n).fill(null).reduce((acc, c, i) => {
     let getKey = (i) => `${i}`;
 
     acc[getKey(i)] = {
       key: getKey(i),
       links: [
+        { link: getKey(i + 1) },
         { link: getKey(i + 2) },
-        { link: getKey(i + 4) }
-        // { link: getKey(i + 3) },
-        // { link: getKey(i + 4) },
-        // { link: getKey(i + 5) },
-        // { link: getKey(i + 6) },
-        // { link: getKey(i + 7) }
+        { link: getKey(i + 3) },
+        { link: getKey(i + 4) },
+        { link: getKey(i + 5) },
+        { link: getKey(i + 6) },
+        { link: getKey(i + 7) }
       ]
     };
     return acc;
   }, {});
 
-// HELPERS
-// makes UDT structure: [{fqn, type: {baseType} || {baseType: LIST, typeArgument}}]
 export function convertToUDTStructure(data) {
   return Object.values(data).reduce((acc, { key, links }) => {
     acc[`${"kookoobooboo_"}${key}`] = {

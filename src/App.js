@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { convertToUDTStructure, generateUdtsWithoutRecTypes } from "./gens";
+import { convertToUDTStructure, generateNotRecursiveLinks } from "./gens";
 
 import "./styles.css";
 import {
@@ -11,7 +11,7 @@ import {
   getUniquePathsFlat
 } from "./traverse";
 
-const udts = convertToUDTStructure(generateUdtsWithoutRecTypes(10));
+const udts = convertToUDTStructure(generateNotRecursiveLinks(10));
 
 export default function App() {
   const [linked, setLinked] = useState({});
