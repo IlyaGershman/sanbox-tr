@@ -39,11 +39,11 @@ export const buildFlatGraph = (udts) => {
   return linksOnly;
 };
 
-export function findTypesToUpdate(type, typesTree) {
-  if (!typesTree[type]) return null;
+export function findNodesToUpdate(name, nestedGraph) {
+  if (!nestedGraph[name]) return null;
 
   let updated = {};
-  let queue = [typesTree[type]];
+  let queue = [nestedGraph[name]];
   while (queue.length > 0) {
     let cur = queue.shift();
     Object.keys(cur).forEach((key) => {
@@ -57,18 +57,18 @@ export function findTypesToUpdate(type, typesTree) {
   return updated;
 }
 
-export function findTypesToUpdateFlat(type, typesTreeFlat) {
+export function findNodesToUpdateFlat(name, flatGraph) {
   let updated = {};
-  let queue = [...typesTreeFlat[type]];
+  let queue = [...flatGraph[name]];
   while (queue.length > 0) {
     let id = queue.shift();
-    let links = typesTreeFlat[id];
+    let links = flatGraph[id];
 
     links &&
       links.forEach((link) => {
         if (!updated[link]) {
           updated[link] = link;
-          queue = [...queue, typesTreeFlat[link]];
+          queue = [...queue, flatGraph[link]];
         }
       });
   }
@@ -76,15 +76,15 @@ export function findTypesToUpdateFlat(type, typesTreeFlat) {
   return updated;
 }
 
-export function getUniquePaths(typesTree) {
-  if (Object.keys(typesTree).length < 1) return null;
+export function getUniquePaths(nestedGraph) {
+  if (Object.keys(nestedGraph).length < 1) return null;
 
   let paths = [];
-  let queue = Object.keys(typesTree).map((key) => ({ key, path: [] }));
+  let queue = Object.keys(nestedGraph).map((key) => ({ key, path: [] }));
 
   while (queue.length > 0) {
     let { path, key } = queue.shift();
-    const nextObj = typesTree[key];
+    const nextObj = nestedGraph[key];
     const nextObjKeys = Object.keys(nextObj);
     const newPath = [...path, key];
     if (nextObjKeys.length) {
@@ -99,15 +99,15 @@ export function getUniquePaths(typesTree) {
   return paths;
 }
 
-export function getUniquePathsFlat(typesTreeFlat) {
-  if (Object.keys(typesTreeFlat).length < 1) return null;
+export function getUniquePathsFlat(flatGraph) {
+  if (Object.keys(flatGraph).length < 1) return null;
 
   let paths = {};
-  let queue = Object.keys(typesTreeFlat).map((key) => ({ key, path: [] }));
+  let queue = Object.keys(flatGraph).map((key) => ({ key, path: [] }));
 
   while (queue.length > 0) {
     let { path, key } = queue.shift();
-    const nextObjKeys = typesTreeFlat[key];
+    const nextObjKeys = flatGraph[key];
     const newPath = [...path, key];
     if (nextObjKeys.length) {
       nextObjKeys.forEach((key) => {
@@ -121,11 +121,11 @@ export function getUniquePathsFlat(typesTreeFlat) {
   return Object.values(paths);
 }
 
-export function getRecursiveNodesFlat(typesTreeFlat) {
-  if (Object.keys(typesTreeFlat).length < 1) return null;
+export function getRecursiveNodesFlat(flatGraph) {
+  if (Object.keys(flatGraph).length < 1) return null;
 
   let paths = [];
-  let queue = Object.keys(typesTreeFlat).map((key) => ({ key, path: [] }));
+  let queue = Object.keys(flatGraph).map((key) => ({ key, path: [] }));
   let memo = new Map();
 
   while (queue.length > 0) {
@@ -133,7 +133,7 @@ export function getRecursiveNodesFlat(typesTreeFlat) {
     const search = path[0];
     const memoKey = `${search}${key}`; // ${path[path.length - 1]}
 
-    const nextObjKeys = typesTreeFlat[key];
+    const nextObjKeys = flatGraph[key];
     const newPath = [...path, key];
 
     if (key === search) {

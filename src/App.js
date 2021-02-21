@@ -7,8 +7,8 @@ import {
 
 import "./styles.css";
 import {
-  findTypesToUpdate,
-  findTypesToUpdateFlat,
+  findNodesToUpdate,
+  findNodesToUpdateFlat,
   buildDeepGraph,
   buildFlatGraph,
   getRecursiveNodesFlat,
@@ -16,8 +16,8 @@ import {
   getUniquePathsFlat
 } from "./traverse";
 
-const udts = convertToUDTStructure(generateNotRecursiveLinks(10));
-// const udts = convertToUDTStructure(generateRecursiveLinks(16));
+// const udts = convertToUDTStructure(generateNotRecursiveLinks(10));
+const udts = convertToUDTStructure(generateRecursiveLinks(16));
 
 export default function App() {
   const [linked, setLinked] = useState({});
@@ -43,26 +43,32 @@ export default function App() {
   const recursiveNodesFlat = getRecursiveNodesFlat(flatLinks);
   console.log("recursiveNodesFlat", recursiveNodesFlat);
 
-  if (!recursiveNodesFlat.length) {
-    const typeUpdated = findTypesToUpdate("kookoobooboo_2", linked);
-    console.log("typeUpdated", typeUpdated);
-    const typeUpdatedFlat = findTypesToUpdateFlat("kookoobooboo_2", flatLinks);
-    console.log("typeUpdatedFlat", typeUpdatedFlat);
-
-    const paths = getUniquePaths(linked);
-    console.log("paths", paths);
-    const pathsFlat = getUniquePathsFlat(flatLinks);
-    console.log("pathsFlat", pathsFlat);
-
+  if (recursiveNodesFlat.length) {
     return (
       <div className="App">
-        <pre>{renderFlat(flatLinks)}</pre>
-        <pre>{renderNested(linked)}</pre>
+        the structure is recursive
+        {recursiveNodesFlat.map((r) => (
+          <div>{r}</div>
+        ))}
       </div>
     );
   }
+  const typeUpdated = findNodesToUpdate("kookoobooboo_2", linked);
+  console.log("typeUpdated", typeUpdated);
+  const typeUpdatedFlat = findNodesToUpdateFlat("kookoobooboo_2", flatLinks);
+  console.log("typeUpdatedFlat", typeUpdatedFlat);
 
-  return <div className="App">the structure is recursive</div>;
+  const paths = getUniquePaths(linked);
+  console.log("paths", paths);
+  const pathsFlat = getUniquePathsFlat(flatLinks);
+  console.log("pathsFlat", pathsFlat);
+
+  return (
+    <div className="App withTrees">
+      <pre>{renderFlat(flatLinks)}</pre>
+      <pre>{renderNested(linked)}</pre>
+    </div>
+  );
 }
 
 function renderNested(obj) {
