@@ -1,3 +1,5 @@
+import _ from "lodash";
+
 let delay = (ms) => new Promise((r) => setTimeout(r, ms));
 
 export const getLinks = (udts) => {
@@ -115,4 +117,35 @@ export function getUniquePathsFlat(typesTreeFlat) {
   }
 
   return Object.values(paths);
+}
+
+export function getRecursiveNodesFlat(typesTreeFlat) {
+  if (Object.keys(typesTreeFlat).length < 1) return null;
+
+  let paths = [];
+  let queue = Object.keys(typesTreeFlat).map((key) => ({ key, path: [] }));
+  let memo = new Map();
+
+  while (queue.length > 0) {
+    let { path, key } = queue.shift();
+    const search = path[0];
+    const memoKey = `${search}${key}`; // ${path[path.length - 1]}
+
+    const nextObjKeys = typesTreeFlat[key];
+    const newPath = [...path, key];
+
+    if (key === search) {
+      paths.push(newPath);
+    } else if (nextObjKeys.length) {
+      if (!memo.has(memoKey)) {
+        memo.set(memoKey);
+
+        nextObjKeys.forEach((key) => {
+          queue.push({ path: newPath, key });
+        });
+      }
+    }
+  }
+
+  return Array.from(new Set(_.flattenDeep(paths)));
 }
