@@ -9,8 +9,8 @@ import "./styles.css";
 import {
   findTypesToUpdate,
   findTypesToUpdateFlat,
-  getLinks,
-  getLinksFlat,
+  buildDeepGraph,
+  buildFlatGraph,
   getRecursiveNodesFlat,
   getUniquePaths,
   getUniquePathsFlat
@@ -24,7 +24,7 @@ export default function App() {
 
   useEffect(() => {
     async function setLinksAsync() {
-      const links = await getLinks(udts);
+      const links = await buildDeepGraph(udts);
 
       setLinked(links);
     }
@@ -38,7 +38,7 @@ export default function App() {
   }
 
   console.log("linked", linked);
-  const flatLinks = getLinksFlat(udts);
+  const flatLinks = buildFlatGraph(udts);
   console.log("flatLinks", flatLinks);
   const recursiveNodesFlat = getRecursiveNodesFlat(flatLinks);
   console.log("recursiveNodesFlat", recursiveNodesFlat);

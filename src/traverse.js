@@ -2,7 +2,8 @@ import _ from "lodash";
 
 let delay = (ms) => new Promise((r) => setTimeout(r, ms));
 
-export const getLinks = (udts) => {
+// {a: {b: {c: {d: {}}},c: {d: {}},d: {}}, b: {c,d}
+export const buildDeepGraph = (udts) => {
   let linksOnly = Object.values(udts).reduce((acc, udt, i) => {
     function getLinks(nodes = []) {
       return nodes
@@ -22,7 +23,8 @@ export const getLinks = (udts) => {
   return delay(0).then(() => linksOnly);
 };
 
-export const getLinksFlat = (udts) => {
+// {a: [b,c,d], b: [c,d]}
+export const buildFlatGraph = (udts) => {
   let linksOnly = Object.values(udts).reduce((acc, udt, i) => {
     function getLinks(nodes = []) {
       return nodes
