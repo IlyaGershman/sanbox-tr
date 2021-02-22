@@ -44,7 +44,7 @@ export default function App() {
 
   if (Object.keys(linked).length < 1) {
     console.log("loading nested nestedness...");
-    return <div></div>;
+    return <div>loading nested nestedness...</div>;
   }
 
   console.log("linked", linked);
