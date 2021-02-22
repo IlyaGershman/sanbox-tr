@@ -90,12 +90,12 @@ function renderNested(obj) {
     <div>
       {Object.entries(obj).map(([key, value]) => {
         return (
-          <>
+          <div key={key}>
             <p>{key}</p>
             <div style={{ marginLeft: "20px" }}>
               {Object.keys(value).length > 0 && renderNested(value)}
             </div>
-          </>
+          </div>
         );
       })}
     </div>
@@ -105,12 +105,12 @@ function renderNested(obj) {
 function renderFlat(obj) {
   function renderOne([key, links]) {
     return (
-      <>
+      <div key={key}>
         <p>{key}</p>
         <div style={{ marginLeft: "20px" }}>
           {links.length > 0 && links.map((l) => renderOne([l, obj[l]]))}
         </div>
-      </>
+      </div>
     );
   }
 
