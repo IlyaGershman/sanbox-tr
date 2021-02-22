@@ -21,7 +21,7 @@ import {
   getUniquePathsFlat
 } from "./traverse";
 
-const udts = convertToUDTStructure(generateNotRecursiveLinks(13));
+const udts = convertToUDTStructure(generateNotRecursiveLinks(6));
 // const udts = convertToUDTStructure(generateRecursiveLinks(16));
 // const udts = convertToUDTStructure(data1);
 // const udts = convertToUDTStructure(data2);
@@ -79,8 +79,8 @@ export default function App() {
 
   return (
     <div className="App withTrees">
-      <pre>{renderFlat(flatLinks)}</pre>
-      <pre>{renderNested(linked)}</pre>
+      <pre>Flat: {renderFlat(flatLinks)}</pre>
+      <pre>Nested: {renderNested(linked)}</pre>
     </div>
   );
 }
