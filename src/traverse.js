@@ -2,6 +2,15 @@ import _ from "lodash";
 
 let delay = (ms) => new Promise((r) => setTimeout(r, ms));
 
+export const getUniqueArrays = (arrays) => {
+  return arrays.filter((cur) => {
+    const withoutSelf = arrays.filter((l) => l !== cur);
+    return !withoutSelf.some(
+      (link) => _.endsWith(link, cur) || _.startsWith(link, cur)
+    );
+  });
+};
+
 // {a: {b: {c: {d: {}}},c: {d: {}},d: {}}, b: {c,d}
 export const buildDeepGraph = (udts) => {
   let linksOnly = Object.values(udts).reduce((acc, udt, i) => {
@@ -57,26 +66,6 @@ export function findNodesToUpdate(name, nestedGraph) {
   return Object.keys(updated);
 }
 
-export function findNodesToUpdateFlat(name, flatGraph) {
-  let updated = {};
-  let queue = [name];
-
-  while (queue.length > 0) {
-    let id = queue.shift();
-    let links = flatGraph[id];
-
-    links &&
-      links.forEach((link) => {
-        if (!updated[link]) {
-          updated[link] = link;
-          queue = [...queue, link];
-        }
-      });
-  }
-
-  return Object.keys(updated);
-}
-
 export function getUniquePaths(nestedGraph) {
   if (Object.keys(nestedGraph).length < 1) return null;
 
@@ -97,7 +86,27 @@ export function getUniquePaths(nestedGraph) {
     }
   }
 
-  return paths;
+  return getUniqueArrays(paths);
+}
+
+export function findNodesToUpdateFlat(name, flatGraph) {
+  let updated = {};
+  let queue = [name];
+
+  while (queue.length > 0) {
+    let id = queue.shift();
+    let links = flatGraph[id];
+
+    links &&
+      links.forEach((link) => {
+        if (!updated[link]) {
+          updated[link] = link;
+          queue = [...queue, link];
+        }
+      });
+  }
+
+  return Object.keys(updated);
 }
 
 export function getUniquePathsFlat(flatGraph) {
@@ -119,7 +128,7 @@ export function getUniquePathsFlat(flatGraph) {
     }
   }
 
-  return Object.values(paths);
+  return getUniqueArrays(Object.values(paths));
 }
 
 export function getRecursiveNodesFlat(flatGraph) {

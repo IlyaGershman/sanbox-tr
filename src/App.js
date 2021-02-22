@@ -21,13 +21,13 @@ import {
   getUniquePathsFlat
 } from "./traverse";
 
-const udts = convertToUDTStructure(generateNotRecursiveLinks(6));
+// const udts = convertToUDTStructure(generateNotRecursiveLinks(6));
 // const udts = convertToUDTStructure(generateRecursiveLinks(16));
 // const udts = convertToUDTStructure(data1);
 // const udts = convertToUDTStructure(data2);
 // const udts = convertToUDTStructure(data3);
 // const udts = convertToUDTStructure(data4);
-// const udts = convertToUDTStructure(data5);
+const udts = convertToUDTStructure(data5);
 
 export default function App() {
   const [linked, setLinked] = useState({});
