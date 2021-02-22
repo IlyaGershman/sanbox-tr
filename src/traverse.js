@@ -40,7 +40,7 @@ export const buildFlatGraph = (udts) => {
 };
 
 export function findNodesToUpdate(name, nestedGraph) {
-  if (!nestedGraph[name]) return null;
+  if (!nestedGraph[name]) return [];
 
   let updated = {};
   let queue = [nestedGraph[name]];
@@ -54,12 +54,13 @@ export function findNodesToUpdate(name, nestedGraph) {
     });
   }
 
-  return updated;
+  return Object.keys(updated);
 }
 
 export function findNodesToUpdateFlat(name, flatGraph) {
   let updated = {};
-  let queue = [...(flatGraph[name] || [])];
+  let queue = [name];
+
   while (queue.length > 0) {
     let id = queue.shift();
     let links = flatGraph[id];
@@ -68,12 +69,12 @@ export function findNodesToUpdateFlat(name, flatGraph) {
       links.forEach((link) => {
         if (!updated[link]) {
           updated[link] = link;
-          queue = [...queue, flatGraph[link]];
+          queue = [...queue, link];
         }
       });
   }
 
-  return updated;
+  return Object.keys(updated);
 }
 
 export function getUniquePaths(nestedGraph) {

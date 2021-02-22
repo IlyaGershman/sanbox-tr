@@ -21,13 +21,13 @@ import {
   getUniquePathsFlat
 } from "./traverse";
 
-// const udts = convertToUDTStructure(generateNotRecursiveLinks(10));
+const udts = convertToUDTStructure(generateNotRecursiveLinks(13));
 // const udts = convertToUDTStructure(generateRecursiveLinks(16));
 // const udts = convertToUDTStructure(data1);
 // const udts = convertToUDTStructure(data2);
 // const udts = convertToUDTStructure(data3);
 // const udts = convertToUDTStructure(data4);
-const udts = convertToUDTStructure(data5);
+// const udts = convertToUDTStructure(data5);
 
 export default function App() {
   const [linked, setLinked] = useState({});
@@ -63,9 +63,13 @@ export default function App() {
       </div>
     );
   }
-  const typeUpdated = findNodesToUpdate("kookoobooboo_2", linked);
+
+  const updatedType = Object.keys(udts)[1];
+  console.log("updatedType", updatedType);
+
+  const typeUpdated = findNodesToUpdate(updatedType, linked);
   console.log("typeUpdated", typeUpdated);
-  const typeUpdatedFlat = findNodesToUpdateFlat("kookoobooboo_2", flatLinks);
+  const typeUpdatedFlat = findNodesToUpdateFlat(updatedType, flatLinks);
   console.log("typeUpdatedFlat", typeUpdatedFlat);
 
   const paths = getUniquePaths(linked);
