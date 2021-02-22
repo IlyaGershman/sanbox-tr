@@ -2,7 +2,12 @@ import { useEffect, useState } from "react";
 import {
   convertToUDTStructure,
   generateNotRecursiveLinks,
-  generateRecursiveLinks
+  generateRecursiveLinks,
+  data1,
+  data2,
+  data3,
+  data4,
+  data5
 } from "./gens";
 
 import "./styles.css";
@@ -17,7 +22,12 @@ import {
 } from "./traverse";
 
 // const udts = convertToUDTStructure(generateNotRecursiveLinks(10));
-const udts = convertToUDTStructure(generateRecursiveLinks(16));
+// const udts = convertToUDTStructure(generateRecursiveLinks(16));
+// const udts = convertToUDTStructure(data1);
+// const udts = convertToUDTStructure(data2);
+// const udts = convertToUDTStructure(data3);
+// const udts = convertToUDTStructure(data4);
+const udts = convertToUDTStructure(data5);
 
 export default function App() {
   const [linked, setLinked] = useState({});

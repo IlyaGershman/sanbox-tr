@@ -59,7 +59,7 @@ export function findNodesToUpdate(name, nestedGraph) {
 
 export function findNodesToUpdateFlat(name, flatGraph) {
   let updated = {};
-  let queue = [...flatGraph[name]];
+  let queue = [...(flatGraph[name] || [])];
   while (queue.length > 0) {
     let id = queue.shift();
     let links = flatGraph[id];
