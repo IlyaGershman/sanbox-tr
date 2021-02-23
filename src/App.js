@@ -19,11 +19,12 @@ import {
   buildFlatGraph,
   getRecursiveNodesFlat,
   getUniquePaths,
-  getUniquePathsFlat
+  getUniquePathsFlat,
+  getMaxNesting
 } from "./traverse";
 
-const udts = udts1;
-// const udts = convertToUDTStructure(generateNotRecursiveLinks(7));
+// const udts = udts1;
+const udts = convertToUDTStructure(generateNotRecursiveLinks(7));
 // const udts = convertToUDTStructure(generateRecursiveLinks(16));
 // const udts = convertToUDTStructure(data1);
 // const udts = convertToUDTStructure(data2);
@@ -78,10 +79,14 @@ export default function App() {
   console.log("paths", paths);
   const pathsFlat = getUniquePathsFlat(flatLinks);
   console.log("pathsFlat", pathsFlat);
+  const maxNesting = getMaxNesting(flatLinks);
+  console.log("maxNesting", maxNesting);
 
   return (
     <div className="App withTrees">
-      <pre>Flat: {renderFlat(flatLinks)}</pre>
+      <pre>
+        Flat (max nesting: {maxNesting}): {renderFlat(flatLinks)}
+      </pre>
       <pre>Nested: {renderNested(linked)}</pre>
     </div>
   );

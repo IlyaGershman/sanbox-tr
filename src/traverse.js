@@ -32,22 +32,6 @@ export const buildDeepGraph = (udts) => {
   return delay(0).then(() => linksOnly);
 };
 
-// {a: [b,c,d], b: [c,d]}
-export const buildFlatGraph = (udts) => {
-  let linksOnly = Object.values(udts).reduce((acc, udt, i) => {
-    function getLinks(nodes = []) {
-      return nodes
-        .filter((p) => udts[p.type.baseType] || udts[p.type.typeArgument])
-        .map((p) => p.type.typeArgument || p.type.baseType);
-    }
-
-    acc[udt.fqn] = getLinks(udt.nodes);
-    return acc;
-  }, {});
-
-  return linksOnly;
-};
-
 export function findNodesToUpdate(name, nestedGraph) {
   if (!nestedGraph[name]) return [];
 
@@ -89,6 +73,22 @@ export function getUniquePaths(nestedGraph) {
   return getUniqueArrays(paths);
 }
 
+// {a: [b,c,d], b: [c,d]}
+export const buildFlatGraph = (udts) => {
+  let linksOnly = Object.values(udts).reduce((acc, udt, i) => {
+    function getLinks(nodes = []) {
+      return nodes
+        .filter((p) => udts[p.type.baseType] || udts[p.type.typeArgument])
+        .map((p) => p.type.typeArgument || p.type.baseType);
+    }
+
+    acc[udt.fqn] = getLinks(udt.nodes);
+    return acc;
+  }, {});
+
+  return linksOnly;
+};
+
 export function findNodesToUpdateFlat(name, flatGraph) {
   let updated = {};
   let queue = [name];
@@ -129,6 +129,14 @@ export function getUniquePathsFlat(flatGraph) {
   }
 
   return getUniqueArrays(Object.values(paths));
+}
+
+export function getMaxNesting(flatGraph) {
+  const paths = getUniquePathsFlat(flatGraph);
+
+  return (
+    Math.max.apply(null, paths.length ? paths.map((p) => p.length) : [1]) - 1
+  );
 }
 
 export function getRecursiveNodesFlat(flatGraph) {
