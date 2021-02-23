@@ -24,7 +24,7 @@ import {
 } from "./traverse";
 
 // const udts = udts1;
-const udts = convertToUDTStructure(generateNotRecursiveLinks(7));
+const udts = convertToUDTStructure(generateNotRecursiveLinks(10));
 // const udts = convertToUDTStructure(generateRecursiveLinks(16));
 // const udts = convertToUDTStructure(data1);
 // const udts = convertToUDTStructure(data2);

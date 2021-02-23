@@ -134,9 +134,7 @@ export function getUniquePathsFlat(flatGraph) {
 export function getMaxNesting(flatGraph) {
   const paths = getUniquePathsFlat(flatGraph);
 
-  return (
-    Math.max.apply(null, paths.length ? paths.map((p) => p.length) : [1]) - 1
-  );
+  return Math.max.apply(null, paths.length ? paths.map((p) => p.length) : []);
 }
 
 export function getRecursiveNodesFlat(flatGraph) {
