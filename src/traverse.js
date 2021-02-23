@@ -105,7 +105,7 @@ export function findNodesToUpdateFlat(name, flatGraph) {
         }
       });
   }
-
+  console.log(Object.keys(updated));
   return Object.keys(updated);
 }
 

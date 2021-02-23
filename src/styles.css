@@ -12,3 +12,9 @@
 .withTrees {
   display: flex;
 }
+
+.treeRoot {
+  border-left: 1px dashed wheat;
+  padding-left: 15px;
+  margin-left: -15px;
+}
