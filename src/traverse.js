@@ -1,6 +1,6 @@
 import _ from "lodash";
 
-let delay = (ms) => new Promise((r) => setTimeout(r, ms));
+let delay = (ms = 0) => new Promise((r) => setTimeout(r, ms));
 
 export const getUniqueArrays = (arrays) => {
   return arrays.filter((cur) => {
@@ -29,7 +29,7 @@ export const buildDeepGraph = (udts) => {
     return acc;
   }, {});
 
-  return delay(0).then(() => linksOnly);
+  return delay().then(() => linksOnly);
 };
 
 export function findNodesToUpdate(name, nestedGraph) {
